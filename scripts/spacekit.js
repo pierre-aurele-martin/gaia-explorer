@@ -1,3 +1,4 @@
+// To minify
 var Spacekit = (function (exports) {
 	'use strict';
 
