@@ -39,3 +39,33 @@ When we run `next dev` the next time, Next.js will start looking for any `.ts` o
 Next.js has built-in TypeScript declarations, so we'll get autocompletion for Next.js' modules straight away.
 
 A `type-check` script is also added to `package.json`, which runs TypeScript's `tsc` CLI in `noEmit` mode to run type-checking separately. You can then include this, for example, in your `test` scripts.
+
+
+
+options.position	[x,y,z] [ra, dec, barycentric_distance]
+// scale [1,1,1]
+particleSize (number) radius (on va l'utiliser comme ça pour l'instant)
+orbitPathSettings: {
+    leadDurationYears
+    trailDurationYears
+    stepSizeYears
+}
+ephem: {
+  a: semimajor axis // semimajor_axis
+  e: eccentricity // eccentricity
+  i: inclination // inclination
+  epoch: epoch in JD // radial_velocity
+  period: Period in days // orbit_period
+  ma: mean anomaly // mag_g ???
+  // n: mean motion // mag_bp ???
+  // L: longitude // ???
+  om: Longigude of ascending node // longitude_ascending_node
+  w: Perihelion // periastron_date
+  wBar: Longitude of Perihelion // periastron_argument
+  GM: Standard gravitational parameter
+  unit: deg | rad // rad
+}
+ecliptic: {
+  lineColor // random
+  displayLines: true
+}

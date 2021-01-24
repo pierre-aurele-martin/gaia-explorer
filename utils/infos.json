@@ -1,0 +1,131 @@
+const a = { 
+  "source_extended_id": {
+    "description": ""
+  },
+  "source_id": {
+    "description": ""
+  },
+  "solution_id": {
+    "description": ""
+  },
+  "ra": {
+    "description": ""
+  },
+  "dec": {
+    "description": ""
+  },
+  "barycentric_distance": {
+    "description": ""
+  },
+  "pmra": {
+    "description": ""
+  },
+  "pmdec": {
+    "description": ""
+  },
+  "radial_velocity": {
+    "description": ""
+  },
+  "mag_g": {
+    "description": ""
+  },
+  "mag_bp": {
+    "description": ""
+  },
+  "mag_rp": {
+    "description": ""
+  },
+  "mag_rvs": {
+    "description": ""
+  },
+  "v_i": {
+    "description": ""
+  },
+  "mean_absolute_v": {
+    "description": ""
+  },
+  "ag": {
+    "description": ""
+  },
+  "av": {
+    "description": ""
+  },
+  "teff": {
+    "description": ""
+  },
+  "spectral_type": {
+    "description": ""
+  },
+  "logg": {
+    "description": ""
+  },
+  "feh": {
+    "description": ""
+  },
+  "alphafe": {
+    "description": ""
+  },
+  "mbol": {
+    "description": ""
+  },
+  "age": {
+    "description": ""
+  },
+  "mass": {
+    "description": ""
+  },
+  "radius": {
+    "description": ""
+  },
+  "vsini": {
+    "description": ""
+  },
+  "population": {
+    "description": ""
+  },
+  "has_photocenter_motion": {
+    "description": ""
+  },
+  "nc": {
+    "description": ""
+  },
+  "nt": {
+    "description": ""
+  },
+  "semimajor_axis": {
+    "description": ""
+  },
+  "eccentricity": {
+    "description": ""
+  },
+  "inclination": {
+    "description": ""
+  },
+  "longitude_ascending_nod"e: {
+    "description": ""
+  },
+  "orbit_period": {
+    "description": ""
+  },
+  "periastron_date": {
+    "description": ""
+  },
+  "periastron_argument": {
+    "description": ""
+  },
+  "variability_type": {
+    "description": ""
+  },
+  "variability_amplitude": {
+    "description": ""
+  },
+  "variability_period": {
+    "description": ""
+  },
+  "variability_phase": {
+    "description": ""
+  },
+  "r_env_r_star": {
+    "description": ""
+  },
+}
