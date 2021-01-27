@@ -1,85 +1,32 @@
-# TypeScript Next.js example
+# Gaia Explorer
+[Project live - hosted on Github Pages](https://pierre-aurele-martin.github.io/gaia-explorer/)
+## Thanks to:
+[Material-ui](https://github.com/mui-org/material-ui)
+[Spacekit](https://github.com/typpo/spacekit) (check it out!)
+[Algolia React InstantSearch](https://github.com/algolia/react-instantsearch)
 
-This is a really simple project that shows the usage of Next.js with TypeScript.
+## Data
+The data used in the demo are a ridiculously tiny part of [Gaia Early Data Release 3](https://www.cosmos.esa.int/web/gaia/early-data-release-3). Science with 1 billion objects in three dimensions. I only represented 7000+ objects. 
 
-## Deploy your own
+The representation of space objects are mostly inaccurate as I'm no physicist. If you'd like to help me get it straight, [just reach out](https://twitter.com/PierreAurele)
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+You can find the sample I used in the `/public/data` folder.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-typescript&project-name=with-typescript&repository-name=with-typescript)
+## Spacekit
+I'm using [Spacekit](https://github.com/typpo/spacekit) for the space rendering. I had to tweak it so all orbits are ELLIPTICAL as I was not able to render the other types. Same for the data with `has_photocenter_motion === NULL`, I had to filter them because they were all without any orbit. Might be the point of this key, might be not. Again, any help to understand is welcome [Twitter](https://twitter.com/PierreAurele)  or **Pull Request** :)
 
-## How to use it?
+You can find the data mapping between Gaia data and Spacekit in `/hooks/useSpacekit.ts`
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+## Run
+To deploy on Github Pages:
 
-```bash
-npx create-next-app --example with-typescript with-typescript-app
-# or
-yarn create next-app --example with-typescript with-typescript-app
-```
+    npm run deploy
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+To buid locally: 
 
-## Notes
+    npm run dev
 
-This example shows how to integrate the TypeScript type system into Next.js. Since TypeScript is supported out of the box with Next.js, all we have to do is to install TypeScript.
+I'm using [Nextjs](https://github.com/vercel/next.js/), check out the repo for more options, it offer a lot of deployment options :)
 
-```
-npm install --save-dev typescript
-```
-
-To enable TypeScript's features, we install the type declarations for React and Node.
-
-```
-npm install --save-dev @types/react @types/react-dom @types/node
-```
-
-When we run `next dev` the next time, Next.js will start looking for any `.ts` or `.tsx` files in our project and builds it. It even automatically creates a `tsconfig.json` file for our project with the recommended settings.
-
-Next.js has built-in TypeScript declarations, so we'll get autocompletion for Next.js' modules straight away.
-
-A `type-check` script is also added to `package.json`, which runs TypeScript's `tsc` CLI in `noEmit` mode to run type-checking separately. You can then include this, for example, in your `test` scripts.
-
-
-
-options.position	[x,y,z] [ra, dec, barycentric_distance]
-// scale [1,1,1]
-particleSize (number) radius (on va l'utiliser comme ça pour l'instant)
-orbitPathSettings: {
-    leadDurationYears
-    trailDurationYears
-    stepSizeYears
-}
-ephem: {
-  a: semimajor axis // semimajor_axis
-  e: eccentricity // eccentricity
-  i: inclination // inclination
-  epoch: epoch in JD // radial_velocity
-  period: Period in days // orbit_period
-  ma: mean anomaly // mag_g ???
-  // n: mean motion // mag_bp ???
-  // L: longitude // ???
-  om: Longigude of ascending node // longitude_ascending_node
-  w: Perihelion // periastron_date
-  wBar: Longitude of Perihelion // periastron_argument
-  GM: Standard gravitational parameter
-  unit: deg | rad // rad
-}
-ecliptic: {
-  lineColor // random
-  displayLines: true
-}
-
-1 -> 1: Stellar 2: Galaxy
-7294000 -> HTMIndex level12
-0 -> Variability
-0 -> Multiple system
-0912 -> ?
-50000 -> Objectnumber in region
-
-1
-7294000
-0
-0
-4939
-10000
+To parse local data and indexing to Algolia - it's very basic and was meant for my own use:
+`node parser.js`
