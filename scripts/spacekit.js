@@ -22922,7 +22922,7 @@ var Spacekit = (function (exports) {
 				session.addEventListener( 'inputsourceschange', function () {
 
 					inputSources = session.inputSources;
-					console.log( inputSources );
+					// console.log( inputSources );
 
 					for ( var i = 0; i < controllers.length; i ++ ) {
 
@@ -23643,7 +23643,7 @@ var Spacekit = (function (exports) {
 
 			event.preventDefault();
 
-			console.log( 'THREE.WebGLRenderer: Context Lost.' );
+			// console.log( 'THREE.WebGLRenderer: Context Lost.' );
 
 			_isContextLost = true;
 
@@ -23651,7 +23651,7 @@ var Spacekit = (function (exports) {
 
 		function onContextRestore( /* event */ ) {
 
-			console.log( 'THREE.WebGLRenderer: Context Restored.' );
+			// console.log( 'THREE.WebGLRenderer: Context Restored.' );
 
 			_isContextLost = false;
 
@@ -52035,7 +52035,9 @@ var Spacekit = (function (exports) {
 	    return OrbitType.TABLE;
 	  }
 
-	  let e = ephem.get('e');
+		let e = ephem.get('e');
+		// PAM TRICHE
+		return OrbitType.ELLIPTICAL;
 	  if (e > 0.9 && e < 1.2) {
 	    return OrbitType.PARABOLIC;
 	  } else if (e > 1.2) {
