@@ -69,3 +69,17 @@ ecliptic: {
   lineColor // random
   displayLines: true
 }
+
+1 -> 1: Stellar 2: Galaxy
+7294000 -> HTMIndex level12
+0 -> Variability
+0 -> Multiple system
+0912 -> ?
+50000 -> Objectnumber in region
+
+1
+7294000
+0
+0
+4939
+10000

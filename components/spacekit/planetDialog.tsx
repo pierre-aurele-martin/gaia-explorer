@@ -1,19 +1,29 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import { ListItem, ListItemIcon, ListItemText, Tooltip, Typography } from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
+import { Grid, Link, Paper, Typography } from '@material-ui/core';
 
 import columns from '../../utils/dataColumn';
+import { ISpaceData } from '../../interfaces/space';
 
-const useStyles = makeStyles({
-});
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    container: {
+      margin: theme.spacing(2)
+    },
+    paper: {
+      padding: theme.spacing(2),
+      color: theme.palette.text.secondary,
+      minHeight: '100px'
+    },
+
+  }),
+);
 
 export interface SimpleDialogProps {
   open: boolean;
-  data: any;
+  data: ISpaceData;
   onClose: (value: string) => void;
 }
 
@@ -28,19 +38,31 @@ const PlanetDialog = (props: SimpleDialogProps) => {
 
   return (
     <Dialog hideBackdrop={true} onClose={handleClose} aria-labelledby="planet-dialog-infos" open={open}>
-      <DialogTitle id="simple-dialog-title">TITLE: {data?.id}</DialogTitle>
-      <Typography variant="h4" component="h2" gutterBottom>
-        h1. Heading
-      </Typography>
-      <List dense>
-        {JSON.stringify(data)}
-        {columns.map((v) => {
-            return <ListItem>
-              <ListItemText primary={v} secondary={data && data[v]}/>
-            </ListItem>
-          })} 
-      </List>
-    </Dialog>
+      <DialogTitle id="simple-dialog-title">{data?.source_extended_id}</DialogTitle>      
+      <div className={classes.container}>
+        <Typography variant="h6" component="h2" gutterBottom>
+          <Link href="//gea.esac.esa.int/archive/documentation/GEDR3/Gaia_archive/chap_datamodel/sec_dm_simulation_tables/ssec_dm_gaia_universe_model.html" target="_blank" color="secondary">
+            Gaia GEDR3 Datamodel documentation
+          </Link>
+        </Typography>
+        <Grid container spacing={2} >
+          {columns.map((v) => {
+              return (
+                <Grid key={v} item xs={12} sm={6}>
+                  <Paper className={classes.paper}>
+                    <Typography variant="h6" gutterBottom>
+                      {v}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      {data && data[v] || ''}
+                    </Typography>
+                  </Paper>
+                </Grid>
+              )
+            })} 
+        </Grid>
+      </div>
+      </Dialog>
   );
 }
 

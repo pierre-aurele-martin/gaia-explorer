@@ -1,7 +1,10 @@
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { Backdrop, Box, CircularProgress, Theme } from '@material-ui/core';
 import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic'
+import { GetStaticProps } from 'next';
+import { defaultStepValue } from '../components/spacekit/container';
+import algoliasearch from 'algoliasearch';
+import AlgoliaContainer from '../components/algolia/instantsearch';
 
 const useStyles = makeStyles((theme: Theme) => (
   createStyles({
@@ -15,9 +18,7 @@ const useStyles = makeStyles((theme: Theme) => (
   })
 ));
 
-const SpaceKitContainer = dynamic(() => import('../components/spacekit/container'));
-
-const IndexPage = () => {
+const IndexPage = ({hits}) => {
   const classes = useStyles();
 
   const [s1, setS1] = useState<boolean>(false);
@@ -42,11 +43,12 @@ const IndexPage = () => {
     }
   }, []);
 
+  // {/* <SpaceKitContainer hits={hits} /> */}
   return (
     <div className={classes.root}>
       <Box width="100vw" height="100vh">
         {ready ?
-          <SpaceKitContainer />
+          <AlgoliaContainer hits={hits} />
           : (
             <Backdrop className={classes.backdrop} open={!ready}>
               <CircularProgress color="inherit" />
@@ -56,5 +58,32 @@ const IndexPage = () => {
     </div>
   )
 }
+
+export const getStaticProps: GetStaticProps = async (_) => {
+
+  const client = algoliasearch(process.env.NEXT_PUBLIC_ALGOLIA_APP_ID, process.env.ALGOLIA_PRIVATE_KEY);
+  const index = client.initIndex(process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME);
+  let hits = [];
+  try {
+    const search = await index.search('', { page: 0, hitsPerPage: defaultStepValue });
+    hits = search.hits;
+    if (!hits.length) {
+      return {
+        redirect: {
+          destination: '/_error', // I can't imagine Algolia failed
+          permanent: false,
+      },
+    }
+    }
+
+  } catch (error) {
+    console.error('Algolia error', error);
+  }
+
+  return {
+    props: {hits}, // will be passed to the page component as props
+  }
+}
+
 
 export default IndexPage

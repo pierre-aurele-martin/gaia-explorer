@@ -1,13 +1,13 @@
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import { useEffect, useState } from 'react';
-import floatToHex from '../../utils/floatToHex';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { NextPage } from 'next';
 import ActionButtons from '../fab';
-import DataSlider from '../slider';
 import PlanetDialog from './planetDialog';
+// import {client as AlgoliaClient} from '../../utils/algolia';
+// import * as _data from '../../public/data/data.json';
+import {useSpaceKit} from '../../hooks/useSpacekit';
+import { ISpaceData, ISpaceKit } from '../../interfaces/space';
 
-declare global {
-  interface Window { Spacekit: any; }
-}
 const useStyles = makeStyles(() => (
   createStyles({
     root: {
@@ -21,96 +21,109 @@ const useStyles = makeStyles(() => (
   })
 ));
 
-const SpaceKitContainer = () => {
+export const defaultStepValue = 10;
+
+interface ISpaceKitContainerProps {
+  staticHits: ISpaceData[];
+  hits: ISpaceData[];
+  toggleDrawer: any;
+  drawerOpen: boolean;
+  setPlay: Dispatch<SetStateAction<boolean>>;
+  play: boolean;
+}
+
+const SpaceKitContainer: NextPage<ISpaceKitContainerProps> = ({hits, drawerOpen, setPlay, play, toggleDrawer, staticHits}) => {
   const classes = useStyles();
 
   const spaceId = 'main-container';
 
-  // @ts-ignore
-  const [viz, setViz] = useState<any>(null);
+  const {initSpaceKit, destroy, createObject, removeObject} = useSpaceKit(spaceId);
+
+  const [space, setSpace] = useState<ISpaceKit>(null);
+
+  useEffect(() => {
+    if (space) {
+      play ? space.start() : space.stop();
+    }
+  }, [play]);
+
+  const [spaceObjects, setSpaceObjects] = useState<(Record<string, any>)>({})
+  
   const [openPlanetDialog, setOpenPlanetDialog] = useState(false);
   const [planetDialog, setPlanetDialog] = useState(null);
 
+
+  const spaceClick = (obj: ISpaceData) => {
+    setOpenPlanetDialog(true);
+    setPlanetDialog(obj);
+    setPlay(false);
+  }
   const handleClose = (value: any | null) => {
     setOpenPlanetDialog(false);
     setPlanetDialog(value);
-    viz.start();
+    setPlay(true);
   };
-  const initSpaceKit = () => {
-    const Spacekit = window && window.Spacekit;
-    const viz = new Spacekit.Simulation(document.getElementById(spaceId), {
-      basePath: 'https://typpo.github.io/spacekit/src',
-    });
 
-    // Create a skybox using NASA TYCHO artwork.
-    viz.createStars();
+  const createHits = () => {
+    // Spacekit doesn't play so nice with high speed hits refresh.
+    // Should be debounced but that's stupid when showcasing Algolia.
+    console.log('Hits ===>', hits);
 
-    // Create our first object - the sun - using a preset space object.
-    viz.createObject('sun', {...Spacekit.SpaceObjectPresets.SUN, labelText: 'THE SUN'});
-    viz.createObject('earth', {...Spacekit.SpaceObjectPresets.EARTH, labelText: 'THE EARTH'});
+    let _hits = hits;
+    if (!hits || !hits.length) {
+      _hits = staticHits; // use resultsState in InstantSearch would probably be better
+    }
+    if (space && _hits && _hits.length) {
+      const _spaceObjects = {...spaceObjects};
+      const newSpaceObjects = {}
+      for (let obj of _hits) {
+        const id = obj.source_extended_id.trim();
+        if (!_spaceObjects[id]) { // not already in space - create it
+          const newObj = createObject(space, id, obj);
+          newObj._click = (_) => {
+            // This is where we fetch more data if required (not the case here as I put all propertis into Algolia)
+            spaceClick(obj)
+          };
+          newObj._label.addEventListener('click', newObj._click);
+          newSpaceObjects[id] = newObj;
+        } else { // already in space - just get it
+          newSpaceObjects[id] = _spaceObjects[id];
+          // deleteIt from old object
+          delete _spaceObjects[id];
+        }
+      }
 
-    const color = parseInt(`0x${floatToHex(1.314)}`);
-    const planet1Data = {
-      // position: [269.0258404644724, -30.271317503941596, 8847.808], // [ra, dec, barycentric_distance]
-      particleSize: (0.5843208 * 100), // radius
-      labelText: '<div style="cursor: pointer">*134221859-000099E</div>',
-      ephem: new Spacekit.Ephem({
-        epoch: 135713.53, // orbit_period radial_velocity
-        a: 58.348286, // semimajor_axis
-        e: 0.6170001, // eccentricity
-        i: -85.316086, // inclination
-        om: 45.909332, // longitude_ascending_node
-        w: 106223.05, // periastron_date
-        ma: 23.536655, // mag_g
-      }, 'rad'),
-      // textureUrl: '/path/to/spriteTexture.png',
-      // basePath: '/base',
-      theme: {
-        color: color, // V_I
-        orbitColor: color,
-      },
-    };
-    const planet1 = viz.createObject('1', planet1Data)
-
-    planet1._label.addEventListener('click', (_: HTMLElement) => {
-      // e could be use to position dynamically the modal but not so easy 
-      viz.stop();
-      setPlanetDialog(planet1Data);
-      setOpenPlanetDialog(true);
-    });
-   
-    /* console.log('spaceman ===>', spaceman);
-    spaceman._label.addEventListener('click', () => clickObject('splaceman')); */
-    // spaceman._label.onclick(() => console.log('OKOKOK click spaceman'));
-
-    console.log('VIZ ===>', viz);
-    // viz.stop();
-    setViz(viz);
-  }
-
-  const resetCamera = () => {
-    document.getElementById(spaceId).innerHTML = '';
-    initSpaceKit();
-    /* Doesnt work... const camera = viz.getViewer();
-    console.log('Reset Camera ===>', viz, camera);
-    camera._cameraControls.reset(); */
+      // Everything left in _spaceObject must be removed from space + removeEventListner
+      for (let oldId in _spaceObjects) {
+        if (_spaceObjects[oldId]) {
+          _spaceObjects[oldId]._label.removeEventListener('click', _spaceObjects[oldId]._click);
+          removeObject(space, _spaceObjects[oldId]);
+        }
+      }
+      setSpaceObjects(newSpaceObjects);
+    }
   }
 
   useEffect(() => {
-    initSpaceKit();
+    createHits();
+  }, [hits, staticHits]);
+
+  useEffect(() => {
+    // This will keep hits that are Static but not in Hits - should not happen in real life but could be handled
+    setSpace(initSpaceKit());
     return () => {
       // Avoid duplication with HMR as viz as no destroy method - no impact otherwise
-      document.getElementById(spaceId).innerHTML = '';
+      destroy();
     }
 
   }, []);
 
   return <>
-    <DataSlider defaultValue={50} step={50} min={0} max={10000} />
+
     <div id="main-container" className={classes.spaceContainer}></div>
-    <ActionButtons
-      reset={resetCamera}
-    />
+    
+    {!drawerOpen ? <ActionButtons reset={() => null} toggleDrawer={toggleDrawer} /> : null}
+    
     <PlanetDialog open={openPlanetDialog} onClose={handleClose} data={planetDialog}/>
   </>;
 }

@@ -1,4 +1,5 @@
 const floatToHex = (float: number): string => {
+  
   let result;
   const getHex = (i) => ('00' + i.toString(16)).slice(-2);
   const view = new DataView(new ArrayBuffer(4));

@@ -4,6 +4,7 @@ import { ServerStyleSheets } from '@material-ui/core/styles';
 import theme from '../utils/theme';
 
 export default class MyDocument extends Document {
+  
   render() {
     return (
       <Html lang="en">
@@ -12,6 +13,7 @@ export default class MyDocument extends Document {
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+          <link rel="shortcut icon" href={`${process.env.NODE_ENV === 'production' ? '/gaia-explorer' : ''}/public/favicon.ico`} />
         </Head>
         <body>
           <Main />
