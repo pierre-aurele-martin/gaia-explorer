@@ -18,6 +18,13 @@ I'm using [Spacekit](https://github.com/typpo/spacekit) for the space rendering.
 You can find the data mapping between Gaia data and Spacekit in `/hooks/useSpacekit.ts`
 
 ## Run
+You'll need to configure those keys in a .env file: 
+
+ - NEXT_PUBLIC_ALGOLIA_APP_ID=
+ - NEXT_PUBLIC_ALGOLIA_INDEX_NAME=
+ - NEXT_PUBLIC_ALGOLIA_PUBLIC_KEY=
+ - ALGOLIA_PRIVATE_KEY=
+
 To deploy on Github Pages:
 
     npm run deploy
