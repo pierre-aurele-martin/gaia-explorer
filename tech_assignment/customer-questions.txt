@@ -1,0 +1,92 @@
+Question 1: Hello,
+
+I'm new to search engines, and there are a lot of concepts I'm not educated on. To make my onboarding smoother, it'd help if you could provide me with some definitions of the following concepts:
+
+Records
+Indexing
+I'm also struggling with understanding what types of metrics would be useful to include in the "Custom Ranking."
+
+Cheers, George
+--- 
+Hello George,
+
+Thanks for reaching us at Algolia! As we'll see, Algolia takes over most of the search engine's complexity so you can focus on your project.
+
+An Algolia index is a set of records (also called objects in our docs). For example, a bookcase(index) contains books(records). You can also think of an index as an Excel sheet in which each row is a record.
+
+Indexing encompasses all the methods you can use to work with an Algolia index. You can add records, update records etc. When you're changing the content of a specific index, you are indexing. [You can find more documentation on indexing here](https://www.algolia.com/doc/api-client/methods/indexing/).
+
+Our main goal is to help your users find what they are looking for. It's accomplished by returning accurate results, with a relevant ranking of these results. Custom ranking is meant to improve the [default ranking](https://www.algolia.com/doc/guides/managing-results/must-do/custom-ranking/). To be as relevant as possible, we recommend to use numbers (with one or two decimals) and boolean (true / false). For example, if your user is searching for restaurants, you could rank the results based on: Is the restaurant open? Customer's reviews in a Descending order. This way, Algolia will always promote open restaurants with the best reviews.
+
+Feel free to send me a sample of the data you want to index or your website and I'll be able to be more specific on which criteria to use for your custom ranking. If you have any more questions, just reply back.
+
+Cheers,
+
+Pierre Aurèle
+
+---
+
+Question 2: Hello,
+
+Sorry to give you the kind of feedback that I know you do not want to hear, but I really hate the new dashboard design. Clearing and deleting indexes are now several clicks away. I am needing to use these features while iterating, so this is inconvenient.
+
+Regards, Matt
+
+Hello Matt,
+--- 
+Thank you for sending us your feedback, we need it in order to continuously improve.
+
+Once you're on the [Indices page](https://www.algolia.com/apps/{APP_ID}/explorer/indices), you can click on each index row to select it. Then, you should see two buttons appears: Clear {n} indices | Delete 2 indices. If this is not working on your side, please tell me so we can investigate this issue. Here is a gif of the expected behaviour : ___
+
+Otherwise, you can also perform those operations through our API. For example in Javascript, this snippet: 
+
+```javascript
+// clearIndex.js
+const algoliasearch = require("algoliasearch");
+
+const args = process.argv.slice(2); // remove node and filePath
+
+const app_id = "YOUR_APP_ID";
+const private_key = "PRIVATE_KEY"; // This key is secret - do not commit this code with but use .env file to hide it
+
+const client = algoliasearch(app_id, private_key);
+const index = client.initIndex(args[0);
+index.clearObjects().then(() => {
+	console.log('index is clear');
+})
+``
+
+You will need to install the algoliasearch package from npm before. Then run in your favorite terminal `node clearIndex.js INDEX_NAME`
+
+The same concept is available in more than ten languages (PHP, Go, Java etc.).
+
+You can find the full documentation for [clearing objects here](https://www.algolia.com/doc/api-reference/api-methods/clear-objects/#examples). The documentation [to delete an index is here](https://www.algolia.com/doc/api-reference/api-methods/delete-index/). Click on the dropdown on the left to choose your favorite language.
+
+Thanks again for your feedback, I hope my answer will make your use of Algolia easier. If not, would you be able to tell me more on how you're indexing so I can provide you with a more in-depth solution ?
+
+Regards,
+
+Pierre Aurèle
+--- 
+Question 3: Hi,
+
+I'm looking to integrate Algolia in my website. Will this be a lot of development work for me? What's the high level process look like?
+
+Regards, Leo
+--- 
+Hi Leo,
+
+Thanks for considering Algolia for your website. As you'll see, integration can be done very quickly!
+
+Creating an index and importing data can be done through our Dashboard, without a single line of code. Same goes for the index configuration if you want even more relevant search results (recommended).
+
+All that's left to do is to integrate Algolia into your website. We provide several [framework integrations](https://www.algolia.com/doc/guides/getting-started/how-algolia-works/in-depth/ecosystem/#framework-integrations) such as Rails or Magento.
+
+But also an [InstantSearch library](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/js/) for the most popular front-end solutions (React, Android, Vue...). With InstantSearch, you can deploy Algolia in a few minutes. A live demo is available here (https://codesandbox.io/embed/github/algolia/doc-code-samples/tree/master/InstantSearch.js/getting-started) - 42 rows of javascript, that's it!
+
+If you need any guidance on your index configuration or would like to go more in-depth on the integration, I'd be happy to help.
+
+Regards,
+
+Pierre Aurèle
+--- 
