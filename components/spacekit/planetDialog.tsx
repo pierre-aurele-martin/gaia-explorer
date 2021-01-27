@@ -28,7 +28,6 @@ export interface SimpleDialogProps {
 }
 
 const PlanetDialog = (props: SimpleDialogProps) => {
-  // @ts-ignore
   const classes = useStyles();
   const { onClose, open, data } = props;
 

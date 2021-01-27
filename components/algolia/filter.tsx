@@ -6,7 +6,7 @@ import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import { Dispatch, SetStateAction} from 'react';
 
 
-// No idea why the by type is crossover on focus.
+// No idea why the by type is crossovered on focus.
 const useStyles = makeStyles(() => (
   {
     typeRange: {

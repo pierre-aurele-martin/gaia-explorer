@@ -3,8 +3,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import ActionButtons from '../fab';
 import PlanetDialog from './planetDialog';
-// import {client as AlgoliaClient} from '../../utils/algolia';
-// import * as _data from '../../public/data/data.json';
 import {useSpaceKit} from '../../hooks/useSpacekit';
 import { ISpaceData, ISpaceKit } from '../../interfaces/space';
 
@@ -109,10 +107,9 @@ const SpaceKitContainer: NextPage<ISpaceKitContainerProps> = ({hits, drawerOpen,
   }, [hits, staticHits]);
 
   useEffect(() => {
-    // This will keep hits that are Static but not in Hits - should not happen in real life but could be handled
     setSpace(initSpaceKit());
     return () => {
-      // Avoid duplication with HMR as viz as no destroy method - no impact otherwise
+      // Avoid duplication with HMR as viz has no destroy method - no impact otherwise
       destroy();
     }
 

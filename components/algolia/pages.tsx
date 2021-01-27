@@ -10,7 +10,7 @@ const Paging = ({currentRefinement, nbPages, refine}) => {
   
   const [pages, setPages] = useState<number[]>([])
   useEffect(() => {
-    // Algolia should do that alone like a big boy
+    // Algolia should do that alone like a big boy - or I missed something ?
     if (currentRefinement > nbPages) {
       return refine(1);
     }

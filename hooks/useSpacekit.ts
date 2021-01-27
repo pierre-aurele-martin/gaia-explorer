@@ -61,15 +61,6 @@ export const useSpaceKit = (containerId: string): IUseSpaceKit => {
 
     return spaceObj;
     
-
-    /* planet1._label.addEventListener('click', (_: HTMLElement) => {
-      // e could be use to position dynamically the modal but not so easy 
-      space.stop();
-      // setPlanetDialog(planet1Data);
-      // setOpenPlanetDialog(true);
-    }); */
-   
-    // viz.stop();
   }
 
   const removeObject = (space: ISpaceKit, obj: any) => {
@@ -80,6 +71,7 @@ export const useSpaceKit = (containerId: string): IUseSpaceKit => {
     document.getElementById(containerId).innerHTML = '';
   }
 
+  // Doesnt work and spaceKit resetCamera method seems KO
   const resetCamera = () => {
     destroy()
     initSpaceKit();

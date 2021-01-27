@@ -43,7 +43,6 @@ const IndexPage = ({hits}) => {
     }
   }, []);
 
-  // {/* <SpaceKitContainer hits={hits} /> */}
   return (
     <div className={classes.root}>
       <Box width="100vw" height="100vh">
@@ -70,7 +69,7 @@ export const getStaticProps: GetStaticProps = async (_) => {
     if (!hits.length) {
       return {
         redirect: {
-          destination: '/_error', // I can't imagine Algolia failed
+          destination: '/_error', // I can't imagine Algolia fail
           permanent: false,
       },
     }

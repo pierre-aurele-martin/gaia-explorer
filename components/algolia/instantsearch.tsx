@@ -31,7 +31,7 @@ interface IAlgoliaContainerProps {
 }
 
 const CustomHits = connectHits(SpaceKitContainer);
-/* const CustomHits = connectHits((props) => {
+/* Useful to keep your CPU cool - const CustomHits = connectHits((props) => {
   console.log('Hits props ===>', props.hits);
   return <div style={{position: 'absolute', bottom: 0, right: 0}}>OK</div>
 }); */
@@ -49,7 +49,7 @@ const useStyles = makeStyles(() => (
   }
 ));
 
-// I'm hard filtering on purpose - did not find how to get the following Array through API. 
+// I'm hard filtering on purpose - did not find how to get the following Array through API?
 const typeFilters = [
   {value: "", label: "All"},
   {value: "Stellar", label: "Stellar"},
@@ -76,11 +76,12 @@ const AlgoliaContainer: NextPage<IAlgoliaContainerProps> = ({hits}) => {
 
   const searchStateChange = (searchState) => {
     console.log('SearchStateChange ===>', searchState);
-    // TODO -> dynamic routing so we can share search params
+    // TODO -> dynamic routing so we can share search params - components have a createUrl props too - to be continued
   }
 
   const [drawerOpen, setDrawerOpen] = useState<boolean>(true);
   const toggleDrawer = () => setDrawerOpen(!drawerOpen);
+  // very basic response - I should use MUI Drawer but it come with other challenges
   const matches = useMediaQuery('(min-width:600px)');
 
   return (
