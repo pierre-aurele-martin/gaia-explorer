@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 
 const Paging = ({currentRefinement, nbPages, refine}) => {
   // hitsPerPAge: 1000, I got 7K+ objects but nbPages is 2 ? Strange...
-
   
   const [pages, setPages] = useState<number[]>([])
   useEffect(() => {
@@ -15,16 +14,18 @@ const Paging = ({currentRefinement, nbPages, refine}) => {
       return refine(1);
     }
     let pages = [];
-    if (nbPages > 10 && currentRefinement > 6 && (currentRefinement + 5) <= nbPages) {
-      for (let i = (currentRefinement - 4); i < (currentRefinement + 5); i++) {
+
+    // currentRefinement: 96 nbPages: 100
+    if (nbPages > 8 && currentRefinement > 4 && (currentRefinement + 5) < nbPages) {
+      for (let i = (currentRefinement - 4); i < (currentRefinement + 4); i++) {
         pages.push(i);
       }
-    } else if(nbPages > 10 && currentRefinement > 6) {
-      for (let i = (nbPages - currentRefinement - 1); i < (nbPages); i++) {
+    } else if(nbPages > 8 && currentRefinement > 5) {
+      for (let i = (nbPages - 7); i <= (nbPages); i++) {
         pages.push(i);
       }
     } else {
-      for (let i = 0; i < (nbPages > 10 ? 10 : nbPages); i++) {
+      for (let i = 0; i < (nbPages > 8 ? 8 : nbPages); i++) {
         pages.push((i + 1));
       }
     }
@@ -34,7 +35,7 @@ const Paging = ({currentRefinement, nbPages, refine}) => {
   return (
     <ButtonGroup aria-label="paging">
       {pages.map((page) => {
-        return <StyledButton className={page === currentRefinement ? 'selected' : ''} onClick={(_) => refine(page)}>{page}</StyledButton>;
+        return <StyledButton key={page} className={page === currentRefinement ? 'selected' : ''} onClick={(_) => refine(page)}>{page}</StyledButton>;
       })}
     </ButtonGroup>
   );

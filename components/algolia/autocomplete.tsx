@@ -54,7 +54,8 @@ const useStyles = makeStyles(() => (
       boxShadow: '0 0 7px #8B939A',
       marginBottom: '5px',
       fontSize: '1rem',
-      cursor: "pointer"
+      cursor: 'pointer',
+      padding: '5px'
     },
     hl: {
       paddingRight: '5px',

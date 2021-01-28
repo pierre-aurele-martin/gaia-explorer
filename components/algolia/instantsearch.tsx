@@ -31,7 +31,8 @@ interface IAlgoliaContainerProps {
 }
 
 const CustomHits = connectHits(SpaceKitContainer);
-/* Useful to keep your CPU cool - const CustomHits = connectHits((props) => {
+/* Useful to keep your CPU cool - */
+/* const CustomHits = connectHits((props) => {
   console.log('Hits props ===>', props.hits);
   return <div style={{position: 'absolute', bottom: 0, right: 0}}>OK</div>
 }); */
